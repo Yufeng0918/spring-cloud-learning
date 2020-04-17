@@ -122,3 +122,9 @@ GET http://localhost:9527/payment/get/1?username=sg
 Accept: application/json
 
 ###
+
+
+GET http://localhost:3355/configInfo
+Accept: application/json
+
+###

@@ -506,7 +506,7 @@ public class HystrixDashboardMain9001 {
 ```
 ***
 
-## 8. Gateway
+## 8. Cloud Gateway
 - spring cloud gateway replace zuul
 - based on webflux and reactor
 - provide fallback, flow limit, circuit break
@@ -594,4 +594,50 @@ public class MyLogGateWayFilter implements GlobalFilter, Ordered {
         return chain.filter(exchange);
     }
 }
+```
+***
+
+## 9. Cloud Configure
+- provide central configuration centre
+- bind different env to  different configure and dynamic configuration distribution
+#### Github rules
+- {label}/{application}-{profile}.yml, recommended
+- {application}-{profile}.yml
+- {application}/{profile}/{label}
+#### Server Configure
++ import spring-cloud-config-server library
++ enable @EnableConfigServer
+```groovy
+dependencies {
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.1.RELEASE"
+    implementation "org.springframework.cloud:spring-cloud-config-server:2.2.1.RELEASE"
+}
+```
+```java
+@SpringBootApplication
+@EnableConfigServer
+public class ConfigCenterMain3344 { }
+```
+#### Client Configure
+- application.yml: user level
+- bootstrap: system level, parent of ApplicationContext
+- import library and create bootstrap.xml
+```groovy
+dependencies {
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.1.RELEASE"
+    implementation "org.springframework.cloud:spring-cloud-starter-config:2.2.1.RELEASE"
+    implementation "com.bp:cloud-api-common:1.0"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+```
+```yaml
+spring:
+  application:
+    name: config-client
+  cloud:
+    config:
+      label: master 
+      name: config 
+      profile: dev 
+      uri: http://config-3344.com:3344 
 ```
