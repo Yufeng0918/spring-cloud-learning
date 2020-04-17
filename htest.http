@@ -111,7 +111,14 @@ Accept: application/json
 ###
 
 
-GET http://localhost:9527/baidu
+GET http://localhost:9527/payment/lb
+Accept: application/json
+Cookie: username=myname
+
+###
+
+
+GET http://localhost:9527/payment/get/1?username=sg
 Accept: application/json
 
 ###

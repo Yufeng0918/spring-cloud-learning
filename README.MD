@@ -521,10 +521,11 @@ public class HystrixDashboardMain9001 {
         + post: modify response header, logging
     + integrate hystrix
 ![](./image/spring_cloud_gateway_diagram.png)
-#### Configuration
+#### Routing & Predicate
 - exclude spring-boot-starter-web
 - configure routing in yaml or source doe
-- predicate: after, before, between, header, method, path, query
+- predicate: after, before, between, header, method, path, query, cookie
+    + cookie, header: 1st arg is name, 2nd arg is regular expression
 ```groovy
 configurations {
     all.collect { configuration ->
@@ -553,8 +554,8 @@ spring:
           uri: lb://CLOUD-PAYMENT-SERVICE       #routing to service
           predicates:
             - Path=/payment/lb/**        # predicate to match uri
+            - Cookie=username,myname
             # - After=2020-05-21T15:51:37.485+08:00[Asia/Shanghai]
-            #- Cookie=username,myname
             #- Header=X-Request-Id, \d+  #
 ```
 ```java
@@ -568,6 +569,29 @@ public class GateWayConfig {
             r -> r.path("/guonei").uri("http://news.baidu.com/guonei")).build();
 
         return routes.build();
+    }
+}
+```
+#### Filter
+- configure in routing or global
+- configure custom configuration
+```java
+@Component
+@Slf4j
+public class MyLogGateWayFilter implements GlobalFilter, Ordered {
+
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        log.info("Global Filter: " + LocalDate.now());
+
+        String username = exchange.getRequest().getQueryParams().getFirst("username");
+        if (StringUtils.isEmpty(username)) {
+            log.info("unauthorized access");
+            //set http status code and response immediately
+            exchange.getResponse().setStatusCode(HttpStatus.NOT_ACCEPTABLE);
+            return exchange.getResponse().setComplete();
+        }
+        return chain.filter(exchange);
     }
 }
 ```
