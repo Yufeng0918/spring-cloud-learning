@@ -488,4 +488,18 @@ public class PaymentController {
         return "overload in circuit break " +id;
     }
 }
-```    
+```
+![](./image/hystrix-command-flow-chart.png)
+- realtime monitor
+   + enable hystrix dashboard
+   + open dashboard address http://localhost:9001/hystrix
+        + monitor address: http://localhost:8001/hystrix.stream
+        + delay: 2000
+```java
+@EnableHystrixDashboard
+public class HystrixDashboardMain9001 {
+    public static void main(String[] args) {
+        SpringApplication.run(HystrixDashboardMain9001.class, args);
+    }
+}
+```

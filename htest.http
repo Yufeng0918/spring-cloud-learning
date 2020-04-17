@@ -98,3 +98,8 @@ GET http://localhost:8001/payment/circuit/1
 Accept: application/json
 
 ###
+
+GET http://localhost:8001/payment/circuit/-1
+Accept: application/json
+
+###
