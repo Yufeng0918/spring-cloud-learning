@@ -711,3 +711,20 @@ spring:
     password: guest
 ```
 ![](./image/spring-cloud-rabbit.png)
+***
+
+## 11. Stream
+- many mq product in market
+- ignore mq implementation, adapter for all mq
+- framework for building highly scalable event-driven microservices connected with shared messaging systems
+- define the binder to decouple mq broker difference and application
+- binder implementation: RabbitMQ, Apache Kafka, Kafka Stream, Amazon Kinesis
+- component
+    + Middleware
+    + Binder
+    + @Input: accept message into app
+    + @Output: send message out app
+    + @StreamListener
+    + @EnableBinder
+![](./image/spring-stream-binder.png)
+![](./image/spring-stream.jpg)

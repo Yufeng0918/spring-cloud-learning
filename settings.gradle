@@ -18,4 +18,5 @@ include 'cloud-config-center3344'
 include 'cloud-config-client3355'
 include 'cloud-config-client3366'
 include 'cloud-config-client3366'
+include 'cloud-stream-rabbitmq-provider8801'
 

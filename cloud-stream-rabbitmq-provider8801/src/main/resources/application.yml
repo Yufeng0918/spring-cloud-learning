@@ -1,0 +1,30 @@
+server:
+  port: 8801
+
+spring:
+  application:
+    name: cloud-stream-rabbitmq-provider
+  cloud:
+    stream:
+      binders: # define binder；
+        defaultRabbit: # name
+          type: rabbit  # binding to Rabbit
+          environment: # rabbitmq environment
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+        bindings: # define binding relationship
+          output: # channel
+            destination: studyExchange # exchange name
+            content-type: application/json # message type
+            binder: defaultRabbit
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
