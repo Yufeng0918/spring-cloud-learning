@@ -1,0 +1,63 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.6.RELEASE'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath (
+                "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}",
+                "io.spring.gradle:dependency-management-plugin:1.0.7.RELEASE"
+        )
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+allprojects {
+    group 'com.bp'
+    version '1.0'
+    apply plugin: 'idea'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin:'io.spring.dependency-management'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    [compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    ext {
+            springBootVersion = '2.2.6.RELEASE'
+            springCloudVersion = 'Hoxton.SR1'
+            springCloudAlibabaVersion = '2.2.1.RELEASE'
+    }
+
+    dependencies {
+        implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
+        implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+        implementation "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+        implementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+        implementation "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+        implementation "com.alibaba.cloud:spring-cloud-alibaba-dependencies:$springCloudAlibabaVersion"
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+        compileOnly "org.springframework.boot:spring-boot-devtools:$springBootVersion"
+        testCompile "junit:junit:4.12"
+        testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+    }
+}
+

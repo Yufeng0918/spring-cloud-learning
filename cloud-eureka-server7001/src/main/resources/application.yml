@@ -1,0 +1,14 @@
+server:
+  port: 7001
+
+eureka:
+  instance:
+    hostname: eureka7001.com
+  client:
+    # do not register self
+    register-with-eureka: false
+    # declare as register
+    fetch-registry: false
+    # url to qurey to lookup service
+    service-url:
+      defaultZone: http://eureka7002.com:7002/eureka

@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+group 'com.bp'
+version '1.0'
+
+
+dependencies {
+    implementation "com.bp:cloud-api-common:1.0"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.0.RELEASE"
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:2.2.0.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-ribbon:2.2.0.RELEASE'
+}

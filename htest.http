@@ -1,0 +1,100 @@
+GET http://localhost:8001/payment/get/1
+Accept: application/json
+
+###
+
+
+POST http://localhost:8001/payment/create?serial=NY001
+Content-Type: application/json
+
+{
+}
+
+###
+
+
+GET http://localhost:80/consumer/payment/get/6
+Accept: application/json
+
+###
+
+GET http://localhost:80/consumer/payment/getForEntity/6
+Accept: application/json
+
+###
+
+GET http://localhost:80/consumer/payment/create?serial=NY002
+Content-Type: application/json
+
+{
+}
+
+###
+
+
+GET http://localhost:8004/payment/zk
+Accept: application/json
+
+###
+
+
+GET http://localhost:80/consumer/paymentzk
+Accept: application/json
+
+###
+
+GET http://localhost:8006/payment/consul
+Accept: application/json
+
+###
+
+GET http://localhost:80/consumer/paymentconsul
+Accept: application/json
+
+###
+
+
+GET http://localhost:80/consumer/payment/lb
+Accept: application/json
+
+###
+
+
+
+GET http://localhost:80/consumer/payment/feign/timeout
+Accept: application/json
+
+###
+
+GET http://localhost:8001/payment/feign/timeout
+Accept: application/json
+
+###
+
+
+GET http://localhost:8001/payment/hystrix/ok/6
+Accept: application/json
+
+###
+
+
+GET http://localhost:8001/payment/hystrix/timeout/6
+Accept: application/json
+
+###
+
+GET http://localhost:80/consumer/payment/hystrix/ok/6
+Accept: application/json
+
+###
+
+GET http://localhost:80/consumer/payment/hystrix/timeout/6
+Accept: application/json
+
+###
+
+
+GET http://localhost:8001/payment/circuit/1
+Accept: application/json
+
+###

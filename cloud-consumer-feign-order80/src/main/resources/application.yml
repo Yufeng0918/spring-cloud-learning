@@ -1,0 +1,21 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: order-consumer-feign-service
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+
+logging:
+  level:
+    com.bp.springcloud.service.PaymentFeignService: debug
