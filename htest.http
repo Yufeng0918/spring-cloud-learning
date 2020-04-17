@@ -128,3 +128,9 @@ GET http://localhost:3355/configInfo
 Accept: application/json
 
 ###
+
+POST http://localhost:3355/actuator/refresh
+Accept: application/json
+
+###
+

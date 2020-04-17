@@ -639,5 +639,22 @@ spring:
       label: master 
       name: config 
       profile: dev 
-      uri: http://config-3344.com:3344 
+      uri: http://config-3344.com:3344
+```
+- expose /actuator/refresh interface
+- manual refresh: "curl -X POST http://${host}:${post}/actuator/refresh"
+- controller add @RefreshScope
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+```
+```java
+@RefreshScope
+public class ConfigClientController {
+    @Value("${config.info}")
+    private String configInfo;
+}
 ```
