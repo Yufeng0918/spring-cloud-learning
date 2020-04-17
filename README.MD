@@ -3,6 +3,7 @@
 ## 1.Spring Cloud Overview
 - micro service tech stack
 - Eureka，Zuul in maintenance mode，Nacos including service registration and config
+![](./image/spring-cloud.jpg)
 ***
 
 ## 2. Project Structure
@@ -500,6 +501,73 @@ public class PaymentController {
 public class HystrixDashboardMain9001 {
     public static void main(String[] args) {
         SpringApplication.run(HystrixDashboardMain9001.class, args);
+    }
+}
+```
+***
+
+## 8. Gateway
+- spring cloud gateway replace zuul
+- based on webflux and reactor
+- provide fallback, flow limit, circuit break
+#### Zuul vs Gateway
+- zuul 1.0 in maintenance mode, 2.0 is not production
+- zuul 1.0 is blocking io, no support for websocket
+- gateway integrate with spring cloud
+    + dynamic routing: mapping id with URI
+    + predicate: match URI
+    + filter: redirect request to business controller
+        + pre: parameter valuation, authorization, authentication, logging, flow monitor
+        + post: modify response header, logging
+    + integrate hystrix
+![](./image/spring_cloud_gateway_diagram.png)
+#### Configuration
+- exclude spring-boot-starter-web
+- configure routing in yaml or source doe
+- predicate: after, before, between, header, method, path, query
+```groovy
+configurations {
+    all.collect { configuration ->
+        configuration.exclude   group: 'org.springframework.boot', module: 'spring-boot-starter-web'
+    }
+}
+```
+```yaml
+spring:
+  application:
+    name: cloud-gateway-service
+  cloud:
+    gateway:
+      discovery: #enable load balancer
+        locator:
+          enabled: true
+      routes:
+        - id: payment_routh1 #payment_route   #routing id
+#          uri: http://localhost:8001         #routing host
+          uri: lb://CLOUD-PAYMENT-SERVICE     #routing to service
+          predicates:
+            - Path=/payment/get/**            #predicate to match uri
+
+        - id: payment_routh2 #payment_route     #routing id
+#          uri: http://localhost:8001           #routing host
+          uri: lb://CLOUD-PAYMENT-SERVICE       #routing to service
+          predicates:
+            - Path=/payment/lb/**        # predicate to match uri
+            # - After=2020-05-21T15:51:37.485+08:00[Asia/Shanghai]
+            #- Cookie=username,myname
+            #- Header=X-Request-Id, \d+  #
+```
+```java
+@Configuration
+public class GateWayConfig {
+    @Bean
+    public RouteLocator customRouteLocator(RouteLocatorBuilder routeLocatorBuilder) {
+
+        RouteLocatorBuilder.Builder routes = routeLocatorBuilder.routes();
+        routes.route("path_route_baidu",
+            r -> r.path("/guonei").uri("http://news.baidu.com/guonei")).build();
+
+        return routes.build();
     }
 }
 ```

@@ -26,4 +26,5 @@ findProject(':cloud-provider-hystrix-payment8001')?.name = 'cloud-provider-hystr
 include 'cloud-consumer-hystrix-order80'
 findProject(':cloud-consumer-hystrix-order80')?.name = 'cloud-consumer-hystrix-order80'
 include 'cloud-consumer-hystrix-dashboard9001'
+include 'cloud-gateway-gateway0527'
 

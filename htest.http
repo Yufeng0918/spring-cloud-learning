@@ -103,3 +103,15 @@ GET http://localhost:8001/payment/circuit/-1
 Accept: application/json
 
 ###
+
+
+GET http://localhost:9527/payment/get/1
+Accept: application/json
+
+###
+
+
+GET http://localhost:9527/baidu
+Accept: application/json
+
+###
