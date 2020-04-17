@@ -658,3 +658,56 @@ public class ConfigClientController {
     private String configInfo;
 }
 ```
+***
+
+## 10. Cloud Bus
+- support rabbitMQ, kafka
+- lightweight message broker publish message, client subscribe topic
+- refresh config server, config server publish config to client
+![](./image/spring-cloud-bus.png)
+#### Configure in Server
+- start up rabbit mq server
+- import cloud bus library
+- configure rabbit mq and expose bus-refresh interface
+- publish configure
+    + global: POST http://localhost:3344/actuator/bus-refresh
+    + single: POST http://localhost:3344/actuator/bus-refresh/${application}:${port}
+```groovy
+dependencies {
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.1.RELEASE"
+    implementation "org.springframework.cloud:spring-cloud-starter-bus-amqp:2.2.1.RELEASE"
+}
+
+```
+```yaml
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'bus-refresh'
+```
+#### Configure in Client
+- import cloud bus library
+- configure rabbit mq and expose bus-refresh interface
+```groovy
+dependencies {
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.1.RELEASE"
+    implementation "org.springframework.cloud:spring-cloud-starter-bus-amqp:2.2.1.RELEASE"
+}
+```
+```yaml
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+```
+![](./image/spring-cloud-rabbit.png)

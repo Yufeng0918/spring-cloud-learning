@@ -129,7 +129,22 @@ Accept: application/json
 
 ###
 
+GET http://localhost:3366/configInfo
+Accept: application/json
+
+###
+
 POST http://localhost:3355/actuator/refresh
+Accept: application/json
+
+###
+
+POST http://localhost:3344/actuator/bus-refresh
+Accept: application/json
+
+###
+
+POST http://localhost:3344/actuator/bus-refresh/config-client:3355
 Accept: application/json
 
 ###
