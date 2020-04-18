@@ -784,8 +784,12 @@ public class MessageProviderImpl implements IMessageProvider {
 - import org.springframework.cloud:spring-cloud-starter-stream-rabbit library
 - configure binder and binding
     + @EnableBinding(Source.class) in service to send message
-- consumer will consume duplicated message if consumer are in different group
-- assign the consumer in same group to avoid the duplication message consumption via bindings.input.group
+- grouping
+    - consumer will consume duplicated message if consumer are in different group
+    - assign the consumer in same group to avoid the duplication message consumption via bindings.input.group
+- persistent
+    - consumer without group no persistence
+    - consumer with group will persist message
 ```yaml
 spring:
   application:

@@ -21,7 +21,7 @@ spring:
           destination: studyExchange # exchange name
           content-type: application/json # message type
           binder: defaultRabbit
-          group: groupSG
+#          group: groupSG
 
 eureka:
   client:
