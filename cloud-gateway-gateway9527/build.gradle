@@ -17,7 +17,7 @@ configurations {
 
 dependencies {
 
-    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.1.RELEASE"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
     implementation "org.springframework.cloud:spring-cloud-starter-gateway:2.2.0.RELEASE"
     implementation "com.bp:cloud-api-common:1.0"
     testCompile group: 'junit', name: 'junit', version: '4.12'

@@ -1,9 +1,9 @@
 server:
-  port: 8801
+  port: 8803
 
 spring:
   application:
-    name: cloud-stream-consumer
+    name: cloud-stream-rabbitmq-provider
   cloud:
     stream:
       binders: # define binder；
@@ -17,7 +17,7 @@ spring:
                 username: guest
                 password: guest
       bindings: # define binding relationship
-        output: # channel
+        input: # channel
           destination: studyExchange # exchange name
           content-type: application/json # message type
           binder: defaultRabbit
@@ -28,8 +28,3 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
-  instance:
-    lease-renewal-interval-in-seconds: 2
-    lease-expiration-duration-in-seconds: 5
-    instance-id: send-8801.com
-    prefer-ip-address: true

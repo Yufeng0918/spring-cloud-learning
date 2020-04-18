@@ -15,7 +15,6 @@ import java.util.UUID;
  * @Date: 17/4/20 23:37
  * @Description:
  */
-@Service
 @EnableBinding(Source.class)
 public class MessageProviderImpl implements IMessageProvider {
 

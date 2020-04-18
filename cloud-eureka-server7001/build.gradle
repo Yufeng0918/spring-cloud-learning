@@ -10,7 +10,6 @@ repositories {
 }
 
 dependencies {
-//    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server', version: '2.2.1.RELEASE'
-    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:2.2.1.RELEASE"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

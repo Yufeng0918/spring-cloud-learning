@@ -728,3 +728,104 @@ spring:
     + @EnableBinder
 ![](./image/spring-stream-binder.png)
 ![](./image/spring-stream.gif)
+#### Configure in Server
+- import org.springframework.cloud:spring-cloud-starter-stream-rabbit library
+- configure binder and binding
+    + binders.defaultRabbit is name for mq configure, can be any name
+    + bindings.output.destination is topic name
+    + @EnableBinding(Source.class) in service to send message
+```yaml
+spring:
+  application:
+    name: cloud-stream-consumer
+  cloud:
+    stream:
+      binders: # define binder；
+        defaultRabbit: # name
+          type: rabbit  # binding to Rabbit
+          environment: # rabbitmq environment
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+      bindings: # define binding relationship
+        output: # channel
+          destination: studyExchange # exchange name
+          content-type: application/json # message type
+          binder: defaultRabbit
+```
+```groovy
+dependencies {
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+    implementation "org.springframework.cloud:spring-cloud-config-server"
+    implementation "org.springframework.cloud:spring-cloud-starter-stream-rabbit"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+```
+```java
+@EnableBinding(Source.class)
+public class MessageProviderImpl implements IMessageProvider {
+
+    @Resource
+    private MessageChannel output;
+
+    @Override
+    public String send() {
+        String serial = UUID.randomUUID().toString();
+        output.send(MessageBuilder.withPayload(serial).build());
+        return null;
+    }
+}
+
+```
+#### Configure in Client
+- import org.springframework.cloud:spring-cloud-starter-stream-rabbit library
+- configure binder and binding
+    + @EnableBinding(Source.class) in service to send message
+- consumer will consume duplicated message if consumer are in different group
+```yaml
+spring:
+  application:
+    name: cloud-stream-rabbitmq-provider
+  cloud:
+    stream:
+      binders: # define binder；
+        defaultRabbit: # name
+          type: rabbit  # binding to Rabbit
+          environment: # rabbitmq environment
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+      bindings: # define binding relationship
+        input: # channel
+          destination: studyExchange # exchange name
+          content-type: application/json # message type
+          binder: defaultRabbit
+```
+```groovy
+dependencies {
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+    implementation "org.springframework.cloud:spring-cloud-config-server"
+    implementation "org.springframework.cloud:spring-cloud-starter-stream-rabbit"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+```
+```java
+@Component
+@EnableBinding(Sink.class)
+public class MessageListenerController {
+
+    @Value("${server.port}")
+    private String serverPort;
+
+    @StreamListener(Sink.INPUT)
+    public void input(Message<String> message) {
+        System.out.println("received: " + message.getPayload());
+    }
+}
+```

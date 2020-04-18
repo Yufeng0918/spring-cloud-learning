@@ -149,3 +149,9 @@ Accept: application/json
 
 ###
 
+
+
+GET http://localhost:8801/sendMessage
+Accept: application/json
+
+###

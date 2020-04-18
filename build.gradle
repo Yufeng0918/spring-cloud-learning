@@ -1,7 +1,4 @@
 buildscript {
-    ext {
-        springBootVersion = '2.2.6.RELEASE'
-    }
 
     repositories {
         mavenCentral()
@@ -9,7 +6,7 @@ buildscript {
 
     dependencies {
         classpath (
-                "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}",
+                "org.springframework.boot:spring-boot-gradle-plugin:2.2.2.RELEASE",
                 "io.spring.gradle:dependency-management-plugin:1.0.7.RELEASE"
         )
     }
@@ -39,23 +36,25 @@ subprojects {
         mavenLocal()
         mavenCentral()
     }
-    ext {
-            springBootVersion = '2.2.6.RELEASE'
-            springCloudVersion = 'Hoxton.SR1'
-            springCloudAlibabaVersion = '2.2.1.RELEASE'
+
+    dependencyManagement{
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:2.2.2.RELEASE"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR1"
+            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:2.1.0.RELEASE"
+        }
     }
 
+
     dependencies {
-        implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
-        implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-        implementation "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-        implementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-        implementation "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
-        implementation "com.alibaba.cloud:spring-cloud-alibaba-dependencies:$springCloudAlibabaVersion"
+        implementation "org.springframework.boot:spring-boot-starter"
+        implementation "org.springframework.boot:spring-boot-starter-web"
+        implementation "org.springframework.boot:spring-boot-starter-actuator"
+        implementation "org.springframework.boot:spring-boot-starter-test"
         annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-        compileOnly "org.springframework.boot:spring-boot-devtools:$springBootVersion"
+        compileOnly "org.springframework.boot:spring-boot-devtools"
         testCompile "junit:junit:4.12"
-        testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+        testCompile "org.springframework.boot:spring-boot-starter-test"
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
     }

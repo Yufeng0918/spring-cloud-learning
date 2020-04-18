@@ -3,6 +3,7 @@ package com.bp.springcloud.controller;
 import com.bp.springcloud.service.IMessageProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -11,7 +12,7 @@ import javax.annotation.Resource;
  * @Date: 18/4/20 08:36
  * @Description:
  */
-@Controller
+@RestController
 public class SendMessageController {
 
     @Resource
