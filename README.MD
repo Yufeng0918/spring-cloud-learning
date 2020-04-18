@@ -727,4 +727,4 @@ spring:
     + @StreamListener
     + @EnableBinder
 ![](./image/spring-stream-binder.png)
-![](./image/spring-stream.jpg)
+![](./image/spring-stream.gif)
