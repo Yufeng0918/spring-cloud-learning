@@ -160,3 +160,15 @@ GET http://localhost/consumer/payment/zipkin
 Accept: application/json
 
 ###
+
+
+GET http://localhost:9001/payment/nacos/1
+Accept: application/json
+
+###
+
+
+GET http://localhost:9002/payment/nacos/2
+Accept: application/json
+
+###
