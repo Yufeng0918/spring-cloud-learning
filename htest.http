@@ -175,3 +175,9 @@ GET http://localhost:83/consumer/payment/nacos/1
 Accept: application/json
 
 ###
+
+GET http://localhost:3377/config/info
+Accept: application/json
+
+###
+

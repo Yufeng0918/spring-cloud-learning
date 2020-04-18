@@ -885,3 +885,35 @@ spring:
 - CP: support persistent instance, e.g. k8s or dns
 - AP: week consistent
 #### Configuration
+- namespace + group + id
+   + namespace: env
+   + group: logic group different service instance
+   + service: service cluster
+   + instance: instance
+- Data Id
+    - env control the config
+    - name: ${prefix}-${spring.profile.active}.${file-extension}
+    - prefix: default is spring.application.name or customized by spring.cloud.nacos.config.prefix
+    - file-extension: spring.cloud.nacos.config.file-extension
+- namespace contains group, group contains env
+- bootstrap.yml
+```yaml
+spring:
+  application:
+    name: nacos-config-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #Nacos naming service
+      config:
+        server-addr: localhost:8848 #Nacos config service
+        file-extension: yaml
+        group: DEV_GROUP
+        namespace: 5d49b6d6-2d35-41fc-a075-95240c222d51 # namespace id
+```
+- applicaiton.yml
+```yaml
+spring:
+  profiles:
+    active: dev
+```
