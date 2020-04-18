@@ -155,3 +155,8 @@ GET http://localhost:8801/sendMessage
 Accept: application/json
 
 ###
+
+GET http://localhost/consumer/payment/zipkin
+Accept: application/json
+
+###

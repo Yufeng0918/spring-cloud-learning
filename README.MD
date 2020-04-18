@@ -835,3 +835,32 @@ public class MessageListenerController {
     }
 }
 ```
+***
+
+## 12. Sleuth
+- distributed tracing solution for Spring Cloud, borrowing heavily from Dapper, Zipkin and HTrace
+- sleuth: collection of data
+- zipkin: present data
+![](./image/spring-sleuth.jpeg)
+#### zipkin
+- java -jar zipkin.jar
+- tracing by tracing id, one request have same trace id and different span id for different service
+![](./image/trace-id.png)
+- configure in client
+```yaml
+spring:
+  application:
+    name: cloud-payment-service
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1
+```
+- console: http://localhost:9411/
+![](./image/spring-zipkin.png)
+***
+
+## 13. Cloud Alibaba
+- spring cloud netflix in maintenance mode
+- integration with alibaba cloud
