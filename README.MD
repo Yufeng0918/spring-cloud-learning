@@ -864,3 +864,24 @@ spring:
 ## 13. Cloud Alibaba
 - spring cloud netflix in maintenance mode
 - integration with alibaba cloud
+#### Naming
+- import spring-cloud-starter-alibaba-nacos-discovery library
+- declare nacos server in application.xml
+```groovy
+dependencies {
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+```
+```yaml
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+```
+#### Nacos CA & AP
+![](image/spring-nacos.png)
+- CP: support persistent instance, e.g. k8s or dns
+- AP: week consistent
+#### Configuration

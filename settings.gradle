@@ -24,4 +24,6 @@ include 'cloud-gateway-gateway9527'
 //include 'cloud-stream-rabbitmq-consumer8803'
 include 'cloudalibaba-provider-payment9001'
 include 'cloudalibaba-provider-payment9002'
+include 'cloudalibaba-consumer-nacos-order83'
+include 'cloudalibaba-config-nacos-client3377'
 

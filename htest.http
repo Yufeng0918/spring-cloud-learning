@@ -26,9 +26,6 @@ Accept: application/json
 GET http://localhost:80/consumer/payment/create?serial=NY002
 Content-Type: application/json
 
-{
-}
-
 ###
 
 
@@ -169,6 +166,12 @@ Accept: application/json
 
 
 GET http://localhost:9002/payment/nacos/2
+Accept: application/json
+
+###
+
+
+GET http://localhost:83/consumer/payment/nacos/1
 Accept: application/json
 
 ###
