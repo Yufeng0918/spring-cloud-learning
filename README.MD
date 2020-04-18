@@ -785,6 +785,7 @@ public class MessageProviderImpl implements IMessageProvider {
 - configure binder and binding
     + @EnableBinding(Source.class) in service to send message
 - consumer will consume duplicated message if consumer are in different group
+- assign the consumer in same group to avoid the duplication message consumption via bindings.input.group
 ```yaml
 spring:
   application:
@@ -806,6 +807,7 @@ spring:
           destination: studyExchange # exchange name
           content-type: application/json # message type
           binder: defaultRabbit
+          group: groupSG
 ```
 ```groovy
 dependencies {
