@@ -51,13 +51,12 @@ public class CircleBreakerController {
         return new CommonResult<>(445,"blockHandler-sentinel for flow limit: blockException: "+blockException.getMessage(),payment);
     }
 
-    //==================OpenFeign
     @Resource
     private PaymentService paymentService;
 
     @GetMapping(value = "/consumer/paymentSQL/{id}")
-    public CommonResult<Payment> paymentSQL(@PathVariable("id") Long id)
-    {
+    public CommonResult<Payment> paymentSQL(@PathVariable("id") Long id) {
+
         return paymentService.paymentSQL(id);
     }
 }

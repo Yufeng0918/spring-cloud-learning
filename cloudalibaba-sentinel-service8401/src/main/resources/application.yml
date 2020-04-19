@@ -29,6 +29,6 @@ management:
 
 feign:
   sentinel:
-    enabled: true # 激活Sentinel对Feign的支持
+    enabled: true
 
 

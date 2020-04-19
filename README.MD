@@ -941,16 +941,16 @@ spring:
 ![](image/sentinel-fail-fast.png)
 ![](image/sentinel-warmup.png)
 ![](image/sentinel-queue.png)
-- Circuit break
-    - no half open status, all time windows is second
-    + RT
-        + response time, if continue 5 request in 1s and over response time, will break circuit
-        + after circuit break windows, open circuit
-    + Exception Ratio
-        + QPS is greater than 5 and exception ratio is over threshold, will break circuit
-        + after circuit break windows, open circuit
-    + Exception Number
-        + number of exception exceed threshold
+#### Circuit break
+- no half open status, all time windows is second
++ RT
+    + response time, if continue 5 request in 1s and over response time, will break circuit
+    + after circuit break windows, open circuit
++ Exception Ratio
+    + QPS is greater than 5 and exception ratio is over threshold, will break circuit
+    + after circuit break windows, open circuit
++ Exception Number
+    + number of exception exceed threshold
 ![](image/senti-rt.png)
 - Hot Key
     + set threshold for specific resource and parameter
@@ -1005,7 +1005,7 @@ public class CustomerBlockHandler {
     }
 }
 ```
-- Fallback & BlockHandler
+#### Ribbon: Fallback & BlockHandler
     + fallback: business exception
     + blockHandler: sentinel flow control
     + if configure both, flow reach threshold will handle by blockHandler
@@ -1032,4 +1032,58 @@ public class CircleBreakerController {
         return result;
     }
 }
+```
+#### OpenFeign
+```groovy
+feign:
+  sentinel:
+    enabled: true
+```
+#### Persistence
+- save rule into nacos in json format
+- dataId in nacos is spring.cloud.sentinel.datasource.ds1.nacos.dataId
+```groovy
+spring:
+  application:
+    name: cloudalibaba-sentinel-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+      datasource:
+        ds1:
+          nacos:
+            server-addr: localhost:8848
+            dataId: cloudalibaba-sentinel-service
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
+```
+```json
+[
+      {
+        "resource": "/rateLimit/byUrl",
+        "limitApp": "default",
+        "grade": 1,
+        "count": 1.0,
+        "strategy": 0,
+        "refResource": null,
+        "controlBehavior": 0,
+        "warmUpPeriodSec": 10,
+        "maxQueueingTimeMs": 500,
+        "clusterMode": false,
+        "clusterConfig": {
+          "flowId": null,
+          "thresholdType": 0,
+          "fallbackToLocalWhenFail": true,
+          "strategy": 0,
+          "sampleCount": 10,
+          "windowIntervalMs": 1000
+        }
+      }
+    ]
 ```
