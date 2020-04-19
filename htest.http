@@ -195,3 +195,14 @@ GET http://localhost:8401/testD
 Accept: application/json
 
 ###
+
+
+GET http://localhost:8401/testHotKey?p1=1
+Accept: application/json
+
+###
+
+GET http://localhost:8401/testHotKey?p1=5
+Accept: application/json
+
+###

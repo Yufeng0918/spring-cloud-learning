@@ -942,9 +942,38 @@ spring:
 ![](image/sentinel-warmup.png)
 ![](image/sentinel-queue.png)
 - Circuit break
-    - no half open status
+    - no half open status, all time windows is second
     + RT
-        + response time, if consective 5 request in 1s and over response time, will break circuit break
+        + response time, if continue 5 request in 1s and over response time, will break circuit
         + after circuit break windows, open circuit
     + Exception Ratio
+        + QPS is greater than 5 and exception ratio is over threshold, will break circuit
+        + after circuit break windows, open circuit
     + Exception Number
+        + number of exception exceed threshold
+![](image/senti-rt.png)
+- Hot Key
+    + set threshold for specific resource and parameter
+    + @SentinelResource to set the fallback method and parameter
+    + resource name in sentinel is @SentinelResource(value)
+    + if blockHandler is not set, redirect to /error
+    + advance optional able to set different threshold for specific value of parameter
+```
+@RestController
+@Slf4j
+public class FlowLimitController  {
+    @GetMapping("/testHotKey")
+    @SentinelResource(value = "testHotKey",blockHandler = "deal_testHotKey")
+    public String testHotKey(@RequestParam(value = "p1",required = false) String p1,
+                             @RequestParam(value = "p2",required = false) String p2) {
+        //int age = 10/0;
+        return "------testHotKey";
+    }
+
+    public String deal_testHotKey (String p1, String p2, BlockException exception) {
+        return "fail to testHotKey";
+    }
+}
+```
+![](image/sentinel-hotkey.png)
+![](image/sentinel-hotkey-exception.png)
