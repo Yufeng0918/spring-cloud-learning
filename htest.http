@@ -218,3 +218,10 @@ GET http://localhost:8401/rateLimit/byUrl
 Accept: application/json
 
 ###
+
+
+GET http://localhost:8401/rateLimit/customerBlockHandler
+Accept: application/json
+
+###
+

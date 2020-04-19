@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+}
+
+group 'com.bp'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+    implementation "com.bp:cloud-api-common:1.0"
+}

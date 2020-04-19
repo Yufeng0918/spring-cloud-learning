@@ -982,3 +982,26 @@ public class FlowLimitController  {
     + CPU usage
     + Average RT
     + Entry QPS
+- SentinelResource
+    + Global Exception Handler
+        + @SentinelResource.blockHandlerClass is exception handler class
+        + @SentinelResource.blockHandler is exception handler class's method
+```java
+@RestController
+public class RateLimitController {
+    @GetMapping("/rateLimit/customerBlockHandler")
+    @SentinelResource(value = "customerBlockHandler",
+            blockHandlerClass = CustomerBlockHandler.class,
+            blockHandler = "handlerException2")
+    public CommonResult customerBlockHandler() {
+        return new CommonResult(200,"customized",new Payment(2020L,"serial003"));
+    }
+}
+
+public class CustomerBlockHandler {
+
+    public static CommonResult handlerException(BlockException exception) {
+        return new CommonResult(445,"customized global handlerException----1");
+    }
+}
+```
