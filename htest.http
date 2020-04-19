@@ -181,3 +181,17 @@ Accept: application/json
 
 ###
 
+GET http://localhost:8401/testA
+Accept: application/json
+
+###
+
+GET http://localhost:8401/testB
+Accept: application/json
+
+###
+
+GET http://localhost:8401/testD
+Accept: application/json
+
+###

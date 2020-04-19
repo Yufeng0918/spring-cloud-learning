@@ -911,9 +911,40 @@ spring:
         group: DEV_GROUP
         namespace: 5d49b6d6-2d35-41fc-a075-95240c222d51 # namespace id
 ```
-- applicaiton.yml
+- application.yml
 ```yaml
 spring:
   profiles:
     active: dev
 ```
+***
+
+## Sentinel
+- going to replace hystrix for flow limit, circuit break and service fallback
+- hystrix missing: console, limit request
+![](image/sentinel-features-overview-en.png)
+- init: java -jar sentinel-dashboard-1.7.2.jar
+- Flow Limit
+    + Resource: URI
+    + Type: 
+        + QPS: number of request per second
+        + Thread: number of thread handle, if thread is full, directly fail
+    + Model
+        + fast fail
+        + related: e.g. related B,  if resource B reach limit, control limit for resource A
+        + chain
+    + Effect
+        + direct fail
+        + warm up: code factor is 3, start flow limit is (flow limit / code factor), eventually reach flow limit
+        + queue: request flow in certain speed and set the timeout
+    + Configuration
+![](image/sentinel-fail-fast.png)
+![](image/sentinel-warmup.png)
+![](image/sentinel-queue.png)
+- Circuit break
+    - no half open status
+    + RT
+        + response time, if consective 5 request in 1s and over response time, will break circuit break
+        + after circuit break windows, open circuit
+    + Exception Ratio
+    + Exception Number
