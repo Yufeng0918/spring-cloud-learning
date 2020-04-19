@@ -206,3 +206,15 @@ GET http://localhost:8401/testHotKey?p1=5
 Accept: application/json
 
 ###
+
+
+GET http://localhost:8401/byResource
+Accept: application/json
+
+###
+
+
+GET http://localhost:8401/rateLimit/byUrl
+Accept: application/json
+
+###

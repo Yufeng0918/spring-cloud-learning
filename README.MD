@@ -977,3 +977,8 @@ public class FlowLimitController  {
 ```
 ![](image/sentinel-hotkey.png)
 ![](image/sentinel-hotkey-exception.png)
+- System Load auto adjustment for global settings, all the service
+    + Load: maxQps * minRT
+    + CPU usage
+    + Average RT
+    + Entry QPS
