@@ -1005,3 +1005,31 @@ public class CustomerBlockHandler {
     }
 }
 ```
+- Fallback & BlockHandler
+    + fallback: business exception
+    + blockHandler: sentinel flow control
+    + if configure both, flow reach threshold will handle by blockHandler
+    + exceptionsToIgnore will ignore the exception and will not go to fallback metho
+```java
+public class CircleBreakerController {
+    public static final String SERVICE_URL = "http://nacos-payment-provider";
+
+    @Resource
+    private RestTemplate restTemplate;
+
+    @RequestMapping("/consumer/fallback/{id}")
+    @SentinelResource(value = "fallback",fallback = "handlerFallback",blockHandler = "blockHandler",
+            exceptionsToIgnore = {IllegalArgumentException.class})
+    public CommonResult<Payment> fallback(@PathVariable Long id) {
+        CommonResult<Payment> result = restTemplate.getForObject(SERVICE_URL + "/paymentSQL/"+id,CommonResult.class,id);
+
+        if (id == 4) {
+            throw new IllegalArgumentException ("IllegalArgumentException");
+        }else if (result.getData() == null) {
+            throw new NullPointerException ("NullPointerException, no records");
+        }
+
+        return result;
+    }
+}
+```

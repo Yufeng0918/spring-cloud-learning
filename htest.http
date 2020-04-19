@@ -225,3 +225,7 @@ Accept: application/json
 
 ###
 
+GET http://127.0.0.1:84/consumer/fallback/4
+Accept: application/json
+
+###
