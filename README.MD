@@ -919,7 +919,7 @@ spring:
 ```
 ***
 
-## Sentinel
+## 14. Sentinel
 - going to replace hystrix for flow limit, circuit break and service fallback
 - hystrix missing: console, limit request
 ![](image/sentinel-features-overview-en.png)
@@ -1086,4 +1086,56 @@ spring:
         }
       }
     ]
+```
+***
+
+## 15. Seata
+- Distributed transaction: one Id + three components
+- three components
+    + Transaction Coordinator: maintain transaction status, coordinate commit and rollback
+    + Transaction Manager: transaction boundary
+    + Resource Manager: register transcation status and trigger commit and rollback
+![](image/spring-seata.png)
+- step
+    + TM ask TC open distributed transaction and assign unique XID, XID is same in different service
+    + RM register distributed transaction in TC
+    + TM submit commit/rollback to TC
+    + TC incharge other TM to commit or rollback
+- config file.conf and registry.conf    
+```properts
+## file.conf
+service {
+  #transaction service group mapping
+  vgroupMapping.my_test_tx_group = "fst_tx_group"
+  #only support when registry.type=file, please don't set multiple addresses
+  default.grouplist = "127.0.0.1:8091"
+  #degrade, current not support
+  enableDegrade = false
+  #disable seata
+  disableGlobalTransaction = false
+}
+
+db {
+    ## the implement of javax.sql.DataSource, such as DruidDataSource(druid)/BasicDataSource(dbcp) etc.
+    datasource = "dbcp"
+    ## mysql/oracle/h2/oceanbase etc.
+    dbType = "mysql"
+    driverClassName = "com.mysql.jdbc.Driver"
+    url = "jdbc:mysql://127.0.0.1:3306/seata"
+    user = "root"
+    password = "password"
+    minConn = 1
+}
+
+## registry.conf    
+registry {
+  # file 、nacos 、eureka、redis、zk、consul、etcd3、sofa
+  type = "nacos"
+
+  nacos {
+    serverAddr = "localhost:8848"
+    namespace = ""
+    cluster = "default"
+  }
+}
 ```
