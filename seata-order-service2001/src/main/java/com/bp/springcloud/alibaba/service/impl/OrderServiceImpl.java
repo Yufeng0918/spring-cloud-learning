@@ -5,6 +5,7 @@ import com.bp.springcloud.alibaba.domain.Order;
 import com.bp.springcloud.alibaba.service.AccountService;
 import com.bp.springcloud.alibaba.service.OrderService;
 import com.bp.springcloud.alibaba.service.StorageService;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
     private AccountService accountService;
 
     @Override
+    @GlobalTransactional(name = "fsp-create-order",rollbackFor = Exception.class)
     public void create(Order order) {
 
         log.info("create new order");
