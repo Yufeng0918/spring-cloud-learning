@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
         storageService.decrease(order.getProductId(), order.getCount());
 
         log.info("decrease amount");
-        accountService.decrease(order.getProductId(), order.getMoney());
+        accountService.decrease(order.getUserId(), order.getMoney());
 
         log.info("update order");
         orderDao.update(order.getUserId(), 0);

@@ -21,7 +21,7 @@ public class OrderController {
     private OrderService orderService;
 
 
-    @GetMapping
+    @GetMapping("/order/create")
     public CommonResult create(Order order) {
         orderService.create(order);
         return new CommonResult(200, "create order");

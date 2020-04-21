@@ -30,4 +30,7 @@ include 'cloudalibaba-sentinel-service8401'
 include 'cloudalibaba-provider-payment9003'
 include 'cloudalibaba-provider-payment9004'
 include 'cloudalibaba-consumer-nacos-order84'
+include 'seata-order-service2001'
+include 'seata-storage-service2002'
+include 'seata-account-service2003'
 

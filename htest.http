@@ -234,3 +234,9 @@ GET http://127.0.0.1:84/consumer/paymentSQL/4
 Accept: application/json
 
 ###
+
+
+GET http://127.0.0.1:2001/order/create?userId=1&productId=1&count=10&money=100
+Accept: application/json
+
+###
