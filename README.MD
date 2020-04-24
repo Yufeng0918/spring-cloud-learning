@@ -1303,12 +1303,3 @@ public class OrderServiceImpl implements OrderService {
     }
 }
 ```
-#### Principle
-- pharse one
-    - generate before image
-    - insert sql
-    - generate after image
-- commit
-    - delete before/after image and delete lock
-- rollback
-    - generate revert sql and execute
