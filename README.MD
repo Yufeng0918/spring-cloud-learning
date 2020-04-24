@@ -1092,15 +1092,16 @@ spring:
 ## 15. Seata
 - Distributed transaction: one Id + three components
 - three components
-    + Transaction Coordinator: maintain transaction status, coordinate commit and rollback
-    + Transaction Manager: transaction boundary
-    + Resource Manager: register transcation status and trigger commit and rollback
+    + Transaction Coordinator: seata server, maintain transaction status, coordinate commit and rollback
+    + Transaction Manager: transaction initializer with @GlobalTransaction
+    + Resource Manager: transaction participant, register transcation status and trigger commit and rollback
 ![](image/spring-seata.png)
 - step
     + TM ask TC open distributed transaction and assign unique XID, XID is same in different service
     + RM register distributed transaction in TC
-    + TM submit commit/rollback to TC
-    + TC incharge other TM to commit or rollback
+    + TM close transaction for pharse I
+    + TC decides to commit or rollback
+    + TC info RM to commit or rollback to complete pharse II
 - config file.conf and registry.conf    
 ```properts
 ## file.conf
