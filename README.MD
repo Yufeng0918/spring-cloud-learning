@@ -1102,6 +1102,18 @@ spring:
     + TM close transaction for pharse I
     + TC decides to commit or rollback
     + TC info RM to commit or rollback to complete pharse II
+- pharse I - loading
+    + seata intercept SQL, parse SQL to create "before image"
+    + execute SQL
+    + create "after image", create row lock
+- pharse II - commit
+    + delete "before image"
+    + delete "after image"
+    + delete row lock
+- pharse II - rollback
+    + validate dirty write: compare "after image" and database current data
+    + if no dirty write, generate revert sql from "after image", otherwise need manually intervention
+    + delete "before/after image", row lock
 - config file.conf and registry.conf    
 ```properts
 ## file.conf
