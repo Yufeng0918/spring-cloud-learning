@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class RateLimitController {
 
     @GetMapping("/byResource")
-    @SentinelResource(value = "byResource",blockHandler = "handleException")
+    @SentinelResource(value = "byResource", blockHandler = "handleException")
     public CommonResult byResource() {
-        return new CommonResult(200,"limit by resource name OK",new Payment(2020L,"serial001"));
+        return new CommonResult(200, "limit by resource name OK", new Payment(2020L, "serial001"));
     }
 
     public CommonResult handleException(BlockException exception) {
-        return new CommonResult(444,exception.getClass().getCanonicalName()+"\t service unavaialbe");
+        return new CommonResult(444, exception.getClass().getCanonicalName() + "\t service unavaialbe");
     }
 
     @GetMapping("/rateLimit/byUrl")
     @SentinelResource(value = "byUrl")
     public CommonResult byUrl() {
-        return new CommonResult(200,"limit by url OK",new Payment(2020L,"serial002"));
+        return new CommonResult(200, "limit by url OK", new Payment(2020L, "serial002"));
     }
 
 
@@ -37,6 +37,6 @@ public class RateLimitController {
             blockHandlerClass = CustomerBlockHandler.class,
             blockHandler = "handlerException2")
     public CommonResult customerBlockHandler() {
-        return new CommonResult(200,"customized",new Payment(2020L,"serial003"));
+        return new CommonResult(200, "customized", new Payment(2020L, "serial003"));
     }
 }

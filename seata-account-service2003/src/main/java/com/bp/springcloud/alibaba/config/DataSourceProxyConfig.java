@@ -15,8 +15,7 @@ import javax.sql.DataSource;
 
 /**
  * @auther zzyy
- * @create 2019-12-11 16:58
- * 使用Seata对数据源进行代理
+ * @create 2019-12-11 16:58 使用Seata对数据源进行代理
  */
 @Configuration
 public class DataSourceProxyConfig {
@@ -26,7 +25,7 @@ public class DataSourceProxyConfig {
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource druidDataSource(){
+    public DataSource druidDataSource() {
         return new DruidDataSource();
     }
 
@@ -39,7 +38,8 @@ public class DataSourceProxyConfig {
     public SqlSessionFactory sqlSessionFactoryBean(DataSourceProxy dataSourceProxy) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSourceProxy);
-        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(mapperLocations));
+        sqlSessionFactoryBean
+                .setMapperLocations(new PathMatchingResourcePatternResolver().getResources(mapperLocations));
         sqlSessionFactoryBean.setTransactionFactory(new SpringManagedTransactionFactory());
         return sqlSessionFactoryBean.getObject();
     }

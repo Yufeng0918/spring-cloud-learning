@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bp.springcloud.dao.PaymentDao">
 
-    <insert id="create" parameterType="Payment" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO payment(serial) VALUES (#{serial})
-    </insert>
+  <insert id="create" parameterType="Payment" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO payment(serial)
+    VALUES (#{serial})
+  </insert>
 
-    <resultMap id="BaseResultMap" type="com.bp.springcloud.entities.Payment">
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <id column="serial" property="serial" jdbcType="VARCHAR" />
-    </resultMap>
+  <resultMap id="BaseResultMap" type="com.bp.springcloud.entities.Payment">
+    <id column="id" property="id" jdbcType="BIGINT"/>
+    <id column="serial" property="serial" jdbcType="VARCHAR"/>
+  </resultMap>
 
-    <select id="getPaymentById" parameterType="Long" resultMap="BaseResultMap">
-        SELECT * FROM payment WHERE id=#{id}
-    </select>
+  <select id="getPaymentById" parameterType="Long" resultMap="BaseResultMap">
+    SELECT *
+    FROM payment
+    WHERE id = #{id}
+  </select>
 </mapper>

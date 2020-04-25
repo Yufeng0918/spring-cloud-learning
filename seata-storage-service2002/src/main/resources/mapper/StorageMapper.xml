@@ -4,22 +4,21 @@
 
 <mapper namespace="com.bp.springcloud.alibaba.dao.StorageDao">
 
-    <resultMap id="BaseResultMap" type="com.bp.springcloud.alibaba.domain.Storage">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="product_id" property="productId" jdbcType="BIGINT"/>
-        <result column="total" property="total" jdbcType="INTEGER"/>
-        <result column="used" property="used" jdbcType="INTEGER"/>
-        <result column="residue" property="residue" jdbcType="INTEGER"/>
-    </resultMap>
+  <resultMap id="BaseResultMap" type="com.bp.springcloud.alibaba.domain.Storage">
+    <id column="id" property="id" jdbcType="BIGINT"/>
+    <result column="product_id" property="productId" jdbcType="BIGINT"/>
+    <result column="total" property="total" jdbcType="INTEGER"/>
+    <result column="used" property="used" jdbcType="INTEGER"/>
+    <result column="residue" property="residue" jdbcType="INTEGER"/>
+  </resultMap>
 
-    <update id="decrease">
-        UPDATE
-            t_storage
-        SET
-            used = used + #{count},residue = residue - #{count}
-        WHERE
-            product_id = #{productId}
-    </update>
+  <update id="decrease">
+    UPDATE
+      t_storage
+    SET used    = used + #{count},
+        residue = residue - #{count}
+    WHERE product_id = #{productId}
+  </update>
 
 </mapper>
 

@@ -10,6 +10,6 @@ public class PaymentFallbackService implements PaymentService {
 
     @Override
     public CommonResult<Payment> paymentSQL(Long id) {
-        return new CommonResult<>(446,"fallback, PaymentFallbackService",new Payment(id,"errorSerial"));
+        return new CommonResult<>(446, "fallback, PaymentFallbackService", new Payment(id, "errorSerial"));
     }
 }

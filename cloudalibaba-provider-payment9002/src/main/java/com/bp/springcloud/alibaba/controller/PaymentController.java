@@ -10,14 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @create 2020-02-23 14:13
  */
 @RestController
-public class PaymentController
-{
+public class PaymentController {
     @Value("${server.port}")
     private String serverPort;
 
     @GetMapping(value = "/payment/nacos/{id}")
     public String getPayment(@PathVariable("id") Integer id) {
 
-        return "nacos registry, serverPort: "+ serverPort+"\t id"+id;
+        return "nacos registry, serverPort: " + serverPort + "\t id" + id;
     }
 }

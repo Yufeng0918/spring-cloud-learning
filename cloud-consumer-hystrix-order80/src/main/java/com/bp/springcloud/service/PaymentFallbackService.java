@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @Description:
  */
 @Component
-public class PaymentFallbackService implements PaymentHystrixService{
+public class PaymentFallbackService implements PaymentHystrixService {
 
     @Override
     public String paymentInfoOK(Integer id) {

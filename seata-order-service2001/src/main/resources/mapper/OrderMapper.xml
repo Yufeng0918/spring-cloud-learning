@@ -3,25 +3,27 @@
 
 <mapper namespace="com.bp.springcloud.alibaba.dao.OrderDao">
 
-    <resultMap id="BaseResultMap" type="com.bp.springcloud.alibaba.domain.Order">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="user_id" property="userId" jdbcType="BIGINT"/>
-        <result column="product_id" property="productId" jdbcType="BIGINT"/>
-        <result column="count" property="count" jdbcType="INTEGER"/>
-        <result column="money" property="money" jdbcType="DECIMAL"/>
-        <result column="status" property="status" jdbcType="INTEGER"/>
-    </resultMap>
+  <resultMap id="BaseResultMap" type="com.bp.springcloud.alibaba.domain.Order">
+    <id column="id" property="id" jdbcType="BIGINT"/>
+    <result column="user_id" property="userId" jdbcType="BIGINT"/>
+    <result column="product_id" property="productId" jdbcType="BIGINT"/>
+    <result column="count" property="count" jdbcType="INTEGER"/>
+    <result column="money" property="money" jdbcType="DECIMAL"/>
+    <result column="status" property="status" jdbcType="INTEGER"/>
+  </resultMap>
 
-    <insert id="create">
-        insert into t_order (id,user_id,product_id,count,money,status)
-        values (null,#{userId},#{productId},#{count},#{money},0);
-    </insert>
+  <insert id="create">
+    insert into t_order (id, user_id, product_id, count, money, status)
+    values (null, #{userId}, #{productId}, #{count}, #{money}, 0);
+  </insert>
 
 
-    <update id="update">
-        update t_order set status = 1
-        where user_id=#{userId} and status = #{status};
-    </update>
+  <update id="update">
+    update t_order
+    set status = 1
+    where user_id = #{userId}
+      and status = #{status};
+  </update>
 
 </mapper>
 

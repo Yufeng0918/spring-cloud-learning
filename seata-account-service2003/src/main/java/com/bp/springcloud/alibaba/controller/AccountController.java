@@ -16,8 +16,8 @@ public class AccountController {
     AccountService accountService;
 
     @RequestMapping("/account/decrease")
-    public CommonResult decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money){
-        accountService.decrease(userId,money);
-        return new CommonResult(200,"decrease amount success");
+    public CommonResult decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money) {
+        accountService.decrease(userId, money);
+        return new CommonResult(200, "decrease amount success");
     }
 }

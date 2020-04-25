@@ -35,13 +35,14 @@ public class OrderFeignController {
 
     @GetMapping("/consumer/payment/hystrix/timeout/{id}")
     @HystrixCommand(fallbackMethod = "paymentTimeOutFallbackMethod", commandProperties = {
-        @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="1500")
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1500")
     })
     public String paymentInfoTimeOut(@PathVariable("id") Integer id) {
 //        int age = 10/0;
         String result = paymentHystrixService.paymentInfoTimeOut(id);
         return result;
     }
+
     public String paymentTimeOutFallbackMethod(@PathVariable("id") Integer id) {
         return "payment service overload, please try again later";
     }

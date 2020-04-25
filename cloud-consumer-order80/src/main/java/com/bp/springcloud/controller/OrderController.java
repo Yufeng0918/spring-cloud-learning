@@ -4,8 +4,6 @@ import com.bp.springcloud.entities.CommonResult;
 import com.bp.springcloud.entities.Payment;
 import com.bp.springcloud.lb.LoadBalancer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.net.URI;
-import java.util.List;
 
 /**
  * @Auther: daiyu
@@ -52,7 +48,8 @@ public class OrderController {
     @GetMapping("/consumer/payment/getForEntity/{id}")
     public CommonResult<Payment> getPaymentEntity(@PathVariable("id") Long id) {
 
-        ResponseEntity<CommonResult> entity = restTemplate.getForEntity(PAYMENT_URL + "/payment/get/" + id, CommonResult.class);
+        ResponseEntity<CommonResult> entity =
+                restTemplate.getForEntity(PAYMENT_URL + "/payment/get/" + id, CommonResult.class);
 
         if (entity.getStatusCode().is2xxSuccessful()) {
             return entity.getBody();
@@ -77,7 +74,7 @@ public class OrderController {
 
     @GetMapping("/consumer/payment/zipkin")
     public String paymentZipkin() {
-        String result = restTemplate.getForObject(PAYMENT_URL +"/payment/zipkin/", String.class);
+        String result = restTemplate.getForObject(PAYMENT_URL + "/payment/zipkin/", String.class);
         return result;
     }
 }

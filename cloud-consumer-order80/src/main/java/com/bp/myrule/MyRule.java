@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @Description:
  */
 @Configuration
-public class MyRule{
+public class MyRule {
 
     @Bean
     public IRule myRibbonRule() {

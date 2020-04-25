@@ -13,14 +13,17 @@ File Encoding         : 65001
 Date: 2018-03-05 10:41:40
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for department
 -- ----------------------------
-CREATE TABLE IF NOT EXISTS `payment` (
-                                         `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                                         `serial` varchar(255) DEFAULT '',
-                                         PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `payment`
+(
+    `id`     bigint(20) NOT NULL AUTO_INCREMENT,
+    `serial` varchar(255) DEFAULT '',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
 

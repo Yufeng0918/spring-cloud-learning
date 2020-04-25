@@ -12,13 +12,13 @@ spring:
           enabled: true
       routes:
         - id: payment_routh1 #payment_route   #routing id
-#          uri: http://localhost:8001         #routing host
+          #          uri: http://localhost:8001         #routing host
           uri: lb://CLOUD-PAYMENT-SERVICE     #routing to service
           predicates:
             - Path=/payment/get/**            #predicate to match uri
 
         - id: payment_routh2 #payment_route     #routing id
-#          uri: http://localhost:8001           #routing host
+          #          uri: http://localhost:8001           #routing host
           uri: lb://CLOUD-PAYMENT-SERVICE       #routing to service
           predicates:
             - Path=/payment/lb/**        # predicate to match uri

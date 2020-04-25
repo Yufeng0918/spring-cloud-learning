@@ -11,7 +11,7 @@ repositories {
 
 configurations {
     all.collect { configuration ->
-        configuration.exclude   group: 'org.springframework.boot', module: 'spring-boot-starter-web'
+        configuration.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-web'
     }
 }
 

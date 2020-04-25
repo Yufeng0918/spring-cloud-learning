@@ -25,7 +25,7 @@ public class MyLB implements LoadBalancer {
 
         while (true) {
             current = this.atomicInteger.get();
-            next = current >= Integer.MAX_VALUE ? 0 : current + 1;
+            next = current >= Integer.MAX_VALUE? 0 : current + 1;
             if (this.atomicInteger.compareAndSet(current, next)) {
                 break;
             }

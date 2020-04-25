@@ -5,7 +5,6 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.UUID;
@@ -26,7 +25,7 @@ public class MessageProviderImpl implements IMessageProvider {
 
         String serial = UUID.randomUUID().toString();
         output.send(MessageBuilder.withPayload(serial).build());
-        System.out.println("serial: "+serial);
+        System.out.println("serial: " + serial);
         return null;
     }
 }

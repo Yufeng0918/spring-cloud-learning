@@ -25,34 +25,35 @@ public class CircleBreakerController {
 
     @Resource
     private RestTemplate restTemplate;
+    @Resource
+    private PaymentService paymentService;
 
     @RequestMapping("/consumer/fallback/{id}")
-    @SentinelResource(value = "fallback",fallback = "handlerFallback",blockHandler = "blockHandler")
+    @SentinelResource(value = "fallback", fallback = "handlerFallback", blockHandler = "blockHandler")
 //            exceptionsToIgnore = {IllegalArgumentException.class})
     public CommonResult<Payment> fallback(@PathVariable Long id) {
-        CommonResult<Payment> result = restTemplate.getForObject(SERVICE_URL + "/paymentSQL/"+id,CommonResult.class,id);
+        CommonResult<Payment> result =
+                restTemplate.getForObject(SERVICE_URL + "/paymentSQL/" + id, CommonResult.class, id);
 
         if (id == 4) {
-            throw new IllegalArgumentException ("IllegalArgumentException");
-        }else if (result.getData() == null) {
-            throw new NullPointerException ("NullPointerException, no records");
+            throw new IllegalArgumentException("IllegalArgumentException");
+        } else if (result.getData() == null) {
+            throw new NullPointerException("NullPointerException, no records");
         }
 
         return result;
     }
 
-    public CommonResult handlerFallback(@PathVariable  Long id,Throwable e) {
-        Payment payment = new Payment(id,"null");
-        return new CommonResult<>(444,"handlerFallback, exception: "+e.getMessage(),payment);
+    public CommonResult handlerFallback(@PathVariable Long id, Throwable e) {
+        Payment payment = new Payment(id, "null");
+        return new CommonResult<>(444, "handlerFallback, exception: " + e.getMessage(), payment);
     }
 
-    public CommonResult blockHandler(@PathVariable  Long id,BlockException blockException) {
-        Payment payment = new Payment(id,"null");
-        return new CommonResult<>(445,"blockHandler-sentinel for flow limit: blockException: "+blockException.getMessage(),payment);
+    public CommonResult blockHandler(@PathVariable Long id, BlockException blockException) {
+        Payment payment = new Payment(id, "null");
+        return new CommonResult<>(445, "blockHandler-sentinel for flow limit: blockException: " +
+                                       blockException.getMessage(), payment);
     }
-
-    @Resource
-    private PaymentService paymentService;
 
     @GetMapping(value = "/consumer/paymentSQL/{id}")
     public CommonResult<Payment> paymentSQL(@PathVariable("id") Long id) {
