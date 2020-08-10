@@ -1,8 +1,30 @@
 # Spring Cloud Alibaba
 
+## 0. 演进背景
+
+**两三年前，因为阿里开源的dubbo曾经不怎么维护**，然后加上spring cloud完善的技术栈冲击进来，所以大部分中小型公司都开始拥抱spring cloud，dubbo的使用比例下降很多，所以最近两三年，国内微服务这块，其实大公司是以纯自研/dubbo+自研为主的，中小公司是以全面拥抱spring cloud netflix技术栈为主的
+
+ 
+
+**但是最近一年多，情况产生了变化，因为阿里的dubbo重启活跃维护，同时阿里把自己的微服务技术栈融入进了spring cloud体系和标准**，形成了一个spring cloud alibaba微服务技术组件，也就是以nacos、dubbo、seata、sentinal、rocketmq等技术为核心的一套技术体系
+
+| 组件           | Cloud Alibaba | Cloud Netflix |
+| -------------- | ------------- | ------------- |
+| 注册中心       | nacos         | eureka        |
+| RPC框架        | dubbo         | feign+ribbon  |
+| 分布式事务     | seata         | N/A           |
+| 限流/熔断/降级 | sentinel      | hystrix       |
+| API网关        | N/A           | zuul          |
+
+**spring cloud netflix微服务技术组件，开始更新的非常不活跃**，netflix公司公开宣布他之前开源的一些微服务组件未来就不会怎么更新了，这就导致spring cloud netflix微服务技术组件的未来有点不太光明 
+
+**spring cloud alibaba微服务技术组件，活跃的更新，社区也重启**，做的很好，宣讲，演讲，采访，开始比较活跃起来。所以最近一年其实很多公司也开始尝试用spring cloud alibaba的技术组件，再加上一些其他的开源组件，同时其他的开源组件里，其实国内前天互联网公司也开源了不少优秀的项目，**比如说携程开源的apollo（spring cloud config），大众点评开源的CAT（zipkin、slueth）**，加上其他国外的优秀开源项目，比如Prometheus，ELK，Spring Cloud Gateway，等等，可以组成一套全新的以国内开源技术为核心的微服务体系中心公司开始进行分化，有部分公司还是spring cloud netflix为主的一套技术栈，**有少部分公司开始尝试推行spring cloud alibaba技术栈+国内开源的组件（apollo、CAT）+ Prometheus + ELK + Spring Cloud Gateway（Nginx+lua、Kong、Zuul、API网关自研）**
+
+ 个人倾向于以及比较认可的，是这套技术体系，也认为会是未来国内的主流，因为netflix很多组件维护的都不够活跃了，所以衰退是必然的，加上国内的开源项目，都是中文文档，中文社区，交流也方便，也很活跃，所以我们的课程主要是以这套国内为主的微服务技术体系为主的，也是面向未来的一套技术体系
 
 
-## 1. Cloud Alibaba
+
+## 1. Nacos
 
 - spring cloud netflix in maintenance mode
 - integration with alibaba cloud
