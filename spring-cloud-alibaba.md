@@ -28,7 +28,7 @@
 
 - spring cloud netflix in maintenance mode
 - integration with alibaba cloud
-#### Naming
+### Naming
 - import spring-cloud-starter-alibaba-nacos-discovery library
 - declare nacos server in application.xml
 ```groovy
@@ -44,11 +44,53 @@ spring:
       discovery:
         server-addr: localhost:8848
 ```
-#### Nacos CA & AP
+### zookeeper vs eureka vs consul vs nacos
+
+![](image/spring-ali-01.png)
+
+
+
+#### zookeeper
+
+leader+follower, leader写，同步到follower，follower可以读，保证顺序一致性，就是基本尽量保证到数据一致的，主动推送，典型的CP，leader崩溃的时候，为了保证数据一致性，尽量不要读到不一致的数据，此时要重新选举leader以及做数据同步，此时集群会短暂的不可用，
+
+#### eureka
+
+peer-to-peer，AP, 大家都能写也都能读，每个节点都要同步给其他节点，但是是异步复制的，所以随时读任何一个节点，可能读到的数据都不一样，任何一个节点宕机，其他节点正常工作，可用性超高，但是数据一致性不行
+
+#### Consul
+
+也是基于raft算法的CP模型
+
+#### Nacos
+
+也是基于raft算法的CP模型，同时也支持配置成类似
+
 ![](image/spring-nacos.png)
-- CP: support persistent instance, e.g. k8s or dns
+- CP: support persistent instance
 - AP: week consistent
-#### Configuration
+
+
+
+zk作为注册中心是早期dubbo时代的标配；后续spring cloud进入国内市场，大家就都用eureka了，但是spring cloud也推荐了consul，所以consul也有不少人在用。zk，eureka， consul其实都有人用。但是未来还是建议大家用nacos，因为nacos的功能最为完善，包括了雪崩保护，自动注销实例，监听支持，多数据中心，跨注册中心同步，spring cloud集成，dubbo集成，k8s集成，这些都支持，其他的几个技术基本都支持部分罢了
+
+
+
+### 架构原理
+
+![](image/spring-ali-02.png)
+
+服务通过nacos server内部的**open api进行服务注册**，nacos server内部有一个sevice服务的概念，里面有多个instance实例的概念，同时对**不同的service服务可以划归到不同的namespace命名空间下去**
+
+namespace可以是一个技术团队，比如说一个技术团队，业务A的技术团队所有的服务都放在一个namespace命名空间下面，业务B的技术团队所有的服务都放在另外一个namespace命名空间。注册的时候就是在注册表里维护好每个服务的每个实例的服务器地址，包括ip地址和端口号。
+
+注册成功之后，**服务就会跟nacos server进行定时的心**跳，保持心跳是很关键的，nacos server会定时检查服务各个实例的心跳，如果一定时间没心跳，就认为这个服务实例宕机了，就从注册表里摘除了
+
+其他服务会从nacos server通过open api查询要调用的服务实例列表，而**且nacos客户端会启动一个定时任务，每隔10s就重新拉取一次服务实例列表，**这样如果调用的服务有上线或者下线，就能很快感知到了。此外还可以对要调用的服务进行监听，如果有异常变动会由nacos server反向通知他
+
+
+
+### Configuration
 - namespace + group + id
    + namespace: env
    + group: logic group different service instance
