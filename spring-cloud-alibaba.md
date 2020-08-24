@@ -90,6 +90,42 @@ namespace可以是一个技术团队，比如说一个技术团队，业务A的�
 
 
 
+#### 服务注册
+
+nacos本身的话，其实是完全可以脱离spring cloud自己独立运作的，但是他目前是集成到spring cloud alibaba里去的，也就是在spring cloud的标准之下实现了一些东西，s**pring cloud自己是有一个接口，叫做ServiceRegistry**，也就是服务注册中心的概念，**nacos是实现了一个实现类的，也就是NacosServiceRegistry，实现了register、deregister、close、setStatus、getStatus之**类的方法。利用spring boot自动装配去调用NacosServiceRegistry的register方法去进行服务注册。
+
+而且除了注册之外，还会通过schedule线程池去提交一个定时调度任务, 定时发送心跳给nacos server
+
+```JAVA
+this.exeutorService.schedule(new BeatReactor.BeatTask(beatInfo), beatInfo.getPeriod(), TimeUnit.MILLISECONDS)
+```
+
+接着会进行注册，注册的话是访问nacos server的open api，其实就是http接口
+
+```SHELL
+http://31.208.59.24:8848/nacos/v1/ns/instance?serviceName=xx&ip=xx&port=xx
+```
+
+
+
+#### 服务同步 
+
+nacos server那里是基于一个ConcurrentHashMap作为注册表来放服务信息的，直接会构造一个Service放到map里，然后对Service去addInstance添加一个实例，本质里面就是在维护信息，同时还会建立定时检查实例心跳的机制。最后还会基于一致性协议，比如说raft协议，去把注册同步给其他节点
+
+ 
+
+#### 服务发现
+
+服务发现的本质其实也是一个http接口
+
+```
+http://31.208.59.24:8848/nacos/v1/ns/instance/list?serviceName=xx
+```
+
+**会启动定时任务，每隔10s拉取一次最新的实例列表**，然后服务端还会监听他监听服务的状态，**有异常就会基于UDP协议反向通知客户端这次服务异常变动**
+
+
+
 ### Configuration
 - namespace + group + id
    + namespace: env
