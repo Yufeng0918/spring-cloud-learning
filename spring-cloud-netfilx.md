@@ -425,6 +425,22 @@ public interface ServcieA {
 
 #### RPC选型
 
+##### feign+ribbon
+
+spring cloud netflix技术栈，RPC调用，用的就是feign框架+ribbon做负载均衡，暴露出来的服务接口，就是最平常的基于spring mvc写的controller暴露出来的一些http接口，定义一个http的url地址。 通过feign框架进行RPC调用：String result = serviceA.hello(name)
+
++ **按照http协议来组装你的请求数据**，数据格式都是按照http协议里的请求来做的
++ http请求还还必须做**一个序列化，序列化成二进制的字节流**
++ 通过底层的**tcp连接发送过去**
+
+本质上服务A的部署是基于tomcat去进行部署的，tomcat会监听你指定的端口号，当别人要发送http请求给你的时候，首先必须跟tomcat建立tcp网络连接，发送http请求给tomcat，tomcat收到之后，解析出来这个http请求，交给你的spring mvc写的controller来进行处理
+
+##### dubbo
+
+dubbo自己使用的一套协议，自定义协议，也可以是别的协议，肯定不是http协议，去组装请求数据，然后做一个序列化，二进制字节数组或者是字节流，都可以，通过底层的网络连接把请求数据发送过去就可以了
+
+ServiceA这个类，调用他里面的hello()这个方法，传入name这个参数，**获取result这个返回值，然后通过网络连接把响应数据按照自己的协议封装，序列化，通过网络连接发送给服务B就可以了**。
+
 
 
 - declarative web service client
