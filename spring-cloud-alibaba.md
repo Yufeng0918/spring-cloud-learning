@@ -138,7 +138,39 @@ http://31.208.59.24:8848/nacos/v1/ns/instance/list?serviceName=xx
     - prefix: default is spring.application.name or customized by spring.cloud.nacos.config.prefix
     - file-extension: spring.cloud.nacos.config.file-extension
 - namespace contains group, group contains env
-- bootstrap.yml
+#### Server - HA
+
+cluster.conf
+
+```properties
+#集群的ip地址
+192.168.66.20:8847
+192.168.66.50:8848
+192.168.66.51:8848
+```
+
+application.properties
+
+```properties
+# 开启mysql的持久化
+### If use MySQL as datasource:
+spring.datasource.platform=mysql
+
+### Count of DB:
+db.num=1
+
+### Connect URL of DB:
+db.url.0=jdbc:mysql://192.168.66.1:3306/nacos?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+db.user=root
+db.password=root
+```
+
+
+
+#### Client
+
+bootstrap.yml
+
 ```yaml
 spring:
   application:
@@ -153,7 +185,8 @@ spring:
         group: DEV_GROUP
         namespace: 5d49b6d6-2d35-41fc-a075-95240c222d51 # namespace id
 ```
-- application.yml
+application.yml
+
 ```yaml
 spring:
   profiles:
