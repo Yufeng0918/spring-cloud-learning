@@ -406,6 +406,27 @@ public class OrderMain80 { }
 
 ## 7. OpenFeign
 
+### RPC框架
+
+#### 面向接口的远程调用
+
+假设如果你没有RPC的框架，此时假如说你的每个服务对外暴露的接口，都是一些HTTP接口，http://21.38.254.306:8080/xx/xx?xx=xx，其他服务如果说要调用你的这个服务，就必须使用apache的http的组件，或者是JDK自带的http组件，构建出来一个HTTP请求，包括请求路径，请求头，请求体（JSON串过去）
+
+好不容易构建出来一个完整的HTTP请求，通过http组件发送这个HTTP请求过去，在底层也是得跟那个服务的指定机器的指定端口号，也都是建立TCP连接，在TCP连接之上，发送HTTP协议组装出来的请求过去。接收人家给你的HTTP响应，解析HTTP响应，响应头，状态码（404，500），响应体（JSON串），极为麻烦
+
+RPC这种东西，比如说你发布一个服务，主要就是定义了一些接口
+
+``` JAVA
+public interface ServcieA {
+      public String hello(String name);
+
+}
+```
+
+#### RPC选型
+
+
+
 - declarative web service client
 - underlying implementation is ribbon
 
@@ -447,7 +468,7 @@ public class FeignConfig {
 
 - declare feign client and invoke feign client
 
-```
+```java
 @Component
 @FeignClient("CLOUD-PAYMENT-SERVICE")
 public interface PaymentFeignService {
@@ -493,7 +514,7 @@ public class OrderFeignController {
   + configure HystrixProperty's execution.isolation.thread.timeoutInMillisecond property to set timeout
   + configure Global fallback method via @DefaultProperties
 
-```
+```java
 @EnableHystrix
 public class PaymentHystrixMain8001 { }
 
