@@ -195,7 +195,137 @@ spring:
 
 ***
 
-## 2. Sentinel
+## 2. Dubbo 整合 Nacos
+
+### API接口定义
+
+定义API接口
+
+```JAVA
+public interface ServiceA {
+    String greet(String name);
+}
+```
+
+### 服务端
+
+导入组件
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+
+    <artifactId>demo-dubbo-nacos-ServiceA</artifactId>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+    </properties>
+
+    <dependencies>
+        <!-- 导入spring cloud dubbo组件 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-dubbo</artifactId>
+            <version>2.1.2.RELEASE</version>
+        </dependency>
+       <!-- 导入自己定义的API -->
+        <dependency>
+            <groupId>com.zhss.demo</groupId>
+            <artifactId>demo-dubbo-nacos-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+       <!-- 导入nacos的服务注册和发现 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-alibaba-nacos-discovery</artifactId>
+            <version>2.1.1.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-context</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+            <version>2.1.1.RELEASE</version>
+        </dependency>
+    </dependencies>
+</project>
+```
+
+实现服务接口
+
+```java
+@Service(
+        version = "1.0.0",
+        interfaceClass = ServiceA.class,
+        cluster = "failfast",
+        loadbalance = "roundrobin"
+)
+public class ServiceAImpl implements ServiceA {
+
+    @Override
+    public String greet(String name) {
+        return "hello, " + name;
+    }
+}
+```
+
+配置服务地址和nacos的注册信息
+
+```properties
+spring.application.name=demo-dubbo-nacos-ServiceA
+dubbo.scan.base-packages=com.zhss.demo.dubbo.nacos
+dubbo.protocol.name=dubbo
+dubbo.protocol.port=20880
+# 本地服务地址
+dubbo.registry.address=spring-cloud://192.168.1.102
+# nacos注册集群
+spring.cloud.nacos.discovery.server-addr=192.168.1.102:8848,192.168.1.102:8849,192.168.1.102:8850
+# 多个地址的前缀
+spring.cloud.inetutils.preferred-networks=192
+```
+
+### 客户端
+
+直接调用服务A
+
+```JAVA
+@RestController
+public class TestController {
+
+    @Reference(version = "1.0.0",
+            interfaceClass = ServiceA.class,
+            cluster = "failfast")
+    private ServiceA serviceA;
+
+    @GetMapping("/greet")
+    public String greet(String name) {
+        return serviceA.greet(name);
+    }
+
+}
+```
+
+```properties
+spring.application.name=demo-dubbo-nacos-ServiceB
+dubbo.cloud.subscribed-services=demo-dubbo-nacos-ServiceA
+dubbo.scan.base-packages=com.zhss.demo.dubbo.nacos
+spring.cloud.nacos.discovery.server-addr=192.168.1.102:8848,192.168.1.102:8849,192.168.1.102:8850
+spring.cloud.inetutils.preferred-networks=192
+```
+
+
+
+## 3. Sentinel
+
 - going to replace hystrix for flow limit, circuit break and service fallback
 - hystrix missing: console, limit request
 ![](image/sentinel-features-overview-en.png)
@@ -365,7 +495,7 @@ spring:
 ```
 ***
 
-## 3. Seata
+## 4. Seata
 - Distributed transaction: one Id + three components
 - three components
     + Transaction Coordinator: seata server, maintain transaction status, coordinate commit and rollback
