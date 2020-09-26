@@ -28,33 +28,32 @@
 
 - spring cloud netflix in maintenance mode
 - integration with alibaba cloud
-### Naming
+### Config
 - import spring-cloud-starter-alibaba-nacos-discovery library
 - declare nacos server in application.xml
+- **namespace 用于不同环境的隔离**
 ```groovy
 dependencies {
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 ```
-```yaml
-spring:
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
+```properties
+spring.cloud.nacos.discovery.server-addr=192.168.1.102:8848,192.168.1.102:8849,192.168.1.102:8850
+spring.cloud.nacos.discovery.namespace=dev
+spring.cloud.inetutils.preferred-networks=192
 ```
-### zookeeper vs eureka vs consul vs nacos
+### Zookeeper vs Eureka vs Consul vs Nacos
 
 ![](image/spring-ali-01.png)
 
 
 
-#### zookeeper
+#### Zookeeper
 
 leader+follower, leader写，同步到follower，follower可以读，保证顺序一致性，就是基本尽量保证到数据一致的，主动推送，典型的CP，leader崩溃的时候，为了保证数据一致性，尽量不要读到不一致的数据，此时要重新选举leader以及做数据同步，此时集群会短暂的不可用，
 
-#### eureka
+#### Eureka
 
 peer-to-peer，AP, 大家都能写也都能读，每个节点都要同步给其他节点，但是是异步复制的，所以随时读任何一个节点，可能读到的数据都不一样，任何一个节点宕机，其他节点正常工作，可用性超高，但是数据一致性不行
 
