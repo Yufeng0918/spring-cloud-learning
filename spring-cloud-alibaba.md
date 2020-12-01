@@ -43,11 +43,13 @@ spring.cloud.nacos.discovery.server-addr=192.168.1.102:8848,192.168.1.102:8849,1
 spring.cloud.nacos.discovery.namespace=dev
 spring.cloud.inetutils.preferred-networks=192
 ```
-### Zookeeper vs Eureka vs Consul vs Nacos
+```shell
+sh startup.sh -m standalone
+```
+
+### 服务发现中心比较
 
 ![](image/spring-ali-01.png)
-
-
 
 #### Zookeeper
 
@@ -68,8 +70,6 @@ peer-to-peer，AP, 大家都能写也都能读，每个节点都要同步给其�
 ![](image/spring-nacos.png)
 - CP: support persistent instance
 - AP: week consistent
-
-
 
 zk作为注册中心是早期dubbo时代的标配；后续spring cloud进入国内市场，大家就都用eureka了，但是spring cloud也推荐了consul，所以consul也有不少人在用。zk，eureka， consul其实都有人用。但是未来还是建议大家用nacos，因为nacos的功能最为完善，包括了雪崩保护，自动注销实例，监听支持，多数据中心，跨注册中心同步，spring cloud集成，dubbo集成，k8s集成，这些都支持，其他的几个技术基本都支持部分罢了
 
@@ -325,38 +325,46 @@ spring.cloud.inetutils.preferred-networks=192
 
 ## 3. Sentinel
 
-- going to replace hystrix for flow limit, circuit break and service fallback
-- hystrix missing: console, limit request
+going to replace hystrix for flow limit, circuit break and service fallback
+
+hystrix missing: console, limit request
 ![](image/sentinel-features-overview-en.png)
-- init: java -jar sentinel-dashboard-1.7.2.jar
-- Flow Limit
-    + Resource: URI
-    + Type: 
-        + QPS: number of request per second
-        + Thread: number of thread handle, if thread is full, directly fail
-    + Model
-        + fast fail
-        + related: e.g. related B,  if resource B reach limit, control limit for resource A
-        + chain
-    + Effect
-        + direct fail
-        + warm up: code factor is 3, start flow limit is (flow limit / code factor), eventually reach flow limit
-        + queue: request flow in certain speed and set the timeout
-    + Configuration
+
+init: java -jar sentinel-dashboard-1.7.2.jar
+
+Rate Limit
++ Resource: URI
++ Type: 
+    + QPS: number of request per second
+    + Thread: number of thread handle, if thread is full, directly fail
++ Model
+    + fast fail
+    + related: e.g. related B,  if resource B reach limit, control limit for resource A
+    + chain
++ Effect
+    + direct fail
+    + warm up: code factor is 3, start flow limit is (flow limit / code factor), eventually reach flow limit
+    + queue: request flow in certain speed and set the timeout
++ Configuration
 ![](image/sentinel-fail-fast.png)
 ![](image/sentinel-warmup.png)
 ![](image/sentinel-queue.png)
-#### Circuit break
-- no half open status, all time windows is second
-+ RT
-    + response time, if continue 5 request in 1s and over response time, will break circuit
-    + after circuit break windows, open circuit
-+ Exception Ratio
-    + QPS is greater than 5 and exception ratio is over threshold, will break circuit
-    + after circuit break windows, open circuit
-+ Exception Number
-    + number of exception exceed threshold
+
+### Circuit break
+no half open status, all time windows is second
+
+RT
++ response time, if continue 5 request in 1s and over response time, will break circuit
++ after circuit break windows, open circuit
+
+Exception Ratio
++ QPS is greater than 5 and exception ratio is over threshold, will break circuit
++ after circuit break windows, open circuit
+
+Exception Number
++ number of exception exceed threshold
 ![](image/senti-rt.png)
+
 - Hot Key
     + set threshold for specific resource and parameter
     + @SentinelResource to set the fallback method and parameter
@@ -410,7 +418,7 @@ public class CustomerBlockHandler {
     }
 }
 ```
-#### Ribbon: Fallback & BlockHandler
+### Ribbon: Fallback & BlockHandler
     + fallback: business exception
     + blockHandler: sentinel flow control
     + if configure both, flow reach threshold will handle by blockHandler
@@ -438,13 +446,13 @@ public class CircleBreakerController {
     }
 }
 ```
-#### OpenFeign
+### OpenFeign
 ```groovy
 feign:
   sentinel:
     enabled: true
 ```
-#### Persistence
+### Persistence
 - save rule into nacos in json format
 - dataId in nacos is spring.cloud.sentinel.datasource.ds1.nacos.dataId
 ```groovy
@@ -495,12 +503,16 @@ spring:
 ***
 
 ## 4. Seata
-- Distributed transaction: one Id + three components
-- three components
-    + Transaction Coordinator: seata server, maintain transaction status, coordinate commit and rollback
-    + Transaction Manager: transaction initializer with @GlobalTransaction
-    + Resource Manager: transaction participant, register transcation status and trigger commit and rollback
+Distributed transaction: one Id + three components
+
+**Components**
+
++ Transaction Coordinator: seata server, maintain transaction status, coordinate commit and rollback
++ Transaction Manager: transaction initializer with @GlobalTransaction
++ Resource Manager: transaction participant, register transcation status and trigger commit and rollback
+
 ![](image/spring-seata.png)
+
 - step
     + TM ask TC open distributed transaction and assign unique XID, XID is same in different service
     + RM register distributed transaction in TC
@@ -519,9 +531,15 @@ spring:
     + validate dirty write: compare "after image" and database current data
     + if no dirty write, generate revert sql from "after image", otherwise need manually intervention
     + delete "before/after image", row lock
-- config file.conf and registry.conf    
-```properties
-## file.conf
+- config file.conf and registry.conf
+
+```shell
+sh seata-server.sh -p 8091 -h 127.0.0.1 -m file
+```
+
+**File.conf**
+
+```json
 transport {
   # tcp udt unix-domain-socket
   type = "TCP"
@@ -658,9 +676,10 @@ metrics {
   exporterList = "prometheus"
   exporterPrometheusPort = 9898
 }
+```
+**registory.conf**
 
-
-## registry.conf    
+```json
 registry {
   # file 、nacos 、eureka、redis、zk、consul、etcd3、sofa
   type = "nacos"
@@ -672,6 +691,7 @@ registry {
   }
 }
 ```
+
 - copy and paste file.conf and registry config to resource folder
 - @GlobalTranscation to open distributed transaction
 ```java
